@@ -18,17 +18,20 @@ export const DoughnutChart: React.FC = () => {
   const [categories, setCategories] = useState<ICategories[]>([]);
 
   useEffect(() => {
+    setCategories(modifyCategories());
+  }, []);
+
+  const modifyCategories = () => {
     const amountValue: number = defaultDoughnut.reduce(
       (acc, curr) => acc + curr.value,
       0
     );
-    const newCategories = defaultDoughnut.map((category, index) => ({
+    return defaultDoughnut.map((category, index) => ({
       ...category,
       percent: Math.round((category.value * 100) / amountValue),
       backgroundColor: defaultBackground[index],
     }));
-    setCategories(newCategories);
-  }, []);
+  };
 
   const createData = (): ChartData<"doughnut", number[], unknown> => ({
     datasets: [
@@ -66,7 +69,7 @@ export const DoughnutChart: React.FC = () => {
               ></span>
               <p>{name}</p>
             </div>
-            ›
+
             <div className="doughnutChart__value">{`${value} (+${percent}%)`}</div>
           </div>
         ))}
